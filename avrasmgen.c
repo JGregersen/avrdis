@@ -157,7 +157,7 @@ static int call(struct wordlist *wl, uint32_t *targetwordaddr)
         return 0;
 
     if (wl->next == NULL) {
-        fprintf(stderr, "2nd word of 32-bit opcode after word address %05x missing\n", wl->wordaddress);
+        fprintf(stderr, "2nd word of 32-bit opcode after word address %05X missing\n", wl->wordaddress);
         return 0;
     }
 
@@ -173,7 +173,7 @@ static int jmp(struct wordlist *wl, uint32_t *targetwordaddr)
         return 0;
 
     if (wl->next == NULL) {
-        fprintf(stderr, "2nd word of 32-bit opcode after word address %05x missing\n", wl->wordaddress);
+        fprintf(stderr, "2nd word of 32-bit opcode after word address %05X missing\n", wl->wordaddress);
         return 0;
     }
 
@@ -635,7 +635,7 @@ static int lds(struct wordlist *wl, int *thirtytwobit, int *d, int *k)
     if ((wl->word & 0xfe0f) == 0x9000) {
 
         if (wl->next == NULL) {
-            fprintf(stderr, "2nd word of 32-bit opcode after word address %05x missing\n", wl->wordaddress);
+            fprintf(stderr, "2nd word of 32-bit opcode after word address %05X missing\n", wl->wordaddress);
             return 0;
         }
 
@@ -1039,7 +1039,7 @@ static int sts(struct wordlist *wl, int *thirtytwobit, int *k, int *r)
     if ((wl->word & 0xfe0f) == 0x9200) {
 
         if (wl->next == NULL) {
-            fprintf(stderr, "2nd word of 32-bit opcode after word address %05x missing\n", wl->wordaddress);
+            fprintf(stderr, "2nd word of 32-bit opcode after word address %05X missing\n", wl->wordaddress);
             return 0;
         }
 
@@ -1422,12 +1422,12 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         if (!listing && lastwordaddr+1 != wl->wordaddress) {
             for (pd = 0; pd < padding; pd++)
                 putc(' ', stdout);
-            printf(".org 0x%04x\n", wl->wordaddress);
+            printf(".org 0x%04X\n", wl->wordaddress);
         }
 
         /* Prepend word address and instruction word when in listing mode */
         if (listing)
-            printf("C:%05x %04x ", wl->wordaddress, wl->word);
+            printf("C:%05X %04X ", wl->wordaddress, wl->word);
 
         /* If there is a label for this address, then print the label */
         if ((label = lookuplabel(ls, wl->wordaddress)))
@@ -1440,7 +1440,7 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
             putc(' ', stdout);
 
         if (!inregions(enaregs, wl->wordaddress) && inregions(disregs, wl->wordaddress))
-            printf(".dw 0x%04x\n", wl->word);
+            printf(".dw 0x%04X\n", wl->word);
         else if (adc(wl->word, &d, &r))
             if (d != r)
                 printf("adc r%d, r%d\n", d, r);
@@ -1476,18 +1476,18 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
             printf("call %s\n", lookuplabel(ls, targetwordaddr));
             wl = wl->next; /* 32-bit opcode */
             if (listing)
-                printf("C:%05x %04x\n", wl->wordaddress, wl->word);
+                printf("C:%05X %04X\n", wl->wordaddress, wl->word);
         }
         else if (jmp(wl, &targetwordaddr)) {
             printf("jmp %s\n", lookuplabel(ls, targetwordaddr));
             wl = wl->next; /* 32-bit opcode */
             if (listing)
-                printf("C:%05x %04x\n", wl->wordaddress, wl->word);
+                printf("C:%05X %04X\n", wl->wordaddress, wl->word);
         }
         else if (wl->word == 0x9598)
             printf("break\n");
         else if (cbi(wl->word, &A, &b))
-            printf("cbi 0x%02x, %d\n", A, b);
+            printf("cbi 0x%02X, %d\n", A, b);
         else if (wl->word == 0x9488)
             printf("clc\n");
         else if (wl->word == 0x94d8)
@@ -1517,7 +1517,7 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         else if (dec(wl->word, &d))
             printf("dec r%d\n", d);
         else if (des(wl->word, &K))
-            printf("des 0x%02x\n", K);
+            printf("des 0x%02X\n", K);
         else if (wl->word == 0x9519)
             printf("eicall\n");
         else if (eijmp(wl->word))
@@ -1543,7 +1543,7 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         else if (ijmp(wl->word))
             printf("ijmp\n");
         else if (in(wl->word, &d, &A))
-            printf("in r%d, 0x%02x\n", d, A);
+            printf("in r%d, 0x%02X\n", d, A);
         else if (inc(wl->word, &d))
             printf("inc r%d\n", d);
         else if (lac(wl->word, &d))
@@ -1563,11 +1563,11 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
             else
                 printf("ser r%d\n", d+16);
         else if (lds(wl, &thirtytwobit, &d, &k)) {
-            printf("lds r%d, 0x%02x\n", d, k);
+            printf("lds r%d, 0x%02X\n", d, k);
             if (thirtytwobit) {
                 wl = wl->next; /* 32-bit opcode */
                 if (listing)
-                    printf("C:%05x %04x\n", wl->wordaddress, wl->word);
+                    printf("C:%05X %04X\n", wl->wordaddress, wl->word);
             }
         }
         else if (lpm(wl->word, &d, &operand))
@@ -1596,7 +1596,7 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         else if (ori(wl->word, &d, &K))
             printf("ori r%d, %d\n", d+16, K);
         else if (out(wl->word, &A, &r))
-            printf("out 0x%02x, r%d\n", A, r);
+            printf("out 0x%02X, r%d\n", A, r);
         else if (pop(wl->word, &d))
             printf("pop r%d\n", d);
         else if (push(wl->word, &r))
@@ -1612,11 +1612,11 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         else if (sbci(wl->word, &d, &K))
             printf("sbci r%d, %d\n", d+16, K);
         else if (sbi(wl->word, &A, &b))
-            printf("sbi 0x%02x, %d\n", A, b);
+            printf("sbi 0x%02X, %d\n", A, b);
         else if (sbic(wl->word, &A, &b))
-            printf("sbic 0x%02x, %d\n", A, b);
+            printf("sbic 0x%02X, %d\n", A, b);
         else if (sbis(wl->word, &A, &b))
-            printf("sbis 0x%02x, %d\n", A, b);
+            printf("sbis 0x%02X, %d\n", A, b);
         else if (sbiw(wl->word, &d, &K))
             printf("sbiw r%d:r%d, %d\n", 2*d+24+1, 2*d+24, K);
         else if (sbrc(wl->word, &r, &b))
@@ -1649,11 +1649,11 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
             else
                 printf("st %s, r%d\n", operand, r);
         else if (sts(wl, &thirtytwobit, &k, &r)) {
-            printf("sts 0x%02x, r%d\n", k, r);
+            printf("sts 0x%02X, r%d\n", k, r);
             if (thirtytwobit) {
                 wl = wl->next; /* 32-bit opcode */
                 if (listing)
-                    printf("C:%05x %04x\n", wl->wordaddress, wl->word);
+                    printf("C:%05X %04X\n", wl->wordaddress, wl->word);
             }
         }
         else if (sub(wl->word, &d, &r))
@@ -1667,7 +1667,7 @@ int emitavrasm(struct wordlist *wl, struct regionstruct *enaregs, int listing)
         else if (xch(wl->word, &d))
             printf("xch Z, r%d\n", d);
         else
-            printf(".dw 0x%04x\n", wl->word); /* Unknown */
+            printf(".dw 0x%04X\n", wl->word); /* Unknown */
 
         /* Save last address for discontinuity check */
         lastwordaddr = wl->wordaddress;

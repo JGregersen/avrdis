@@ -127,7 +127,7 @@ int main(int argc, char **argv)
                     goto err_reg;
                 }
                 i++;
-                if (sscanf(argv[i], "%x:%x", &begin, &end) != 2) {
+                if (sscanf(argv[i], "%X:%X", &begin, &end) != 2) {
                     fprintf(stderr, "Option -e : Failed to parse a hex memory address range.\n");
                     goto err_reg;
                 }
