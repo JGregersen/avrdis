@@ -1,3 +1,8 @@
+# This Fork
+This fork is only meant to produce the avrdis output with capital letters in hex formatted numbers.
+No other changes were made to.
+Everything below is the original readme. Thanks to imrehorvath for this tool!
+
 # avrdis
 AVR Disassembler for the 8-bit AVRs.
 
